@@ -722,6 +722,8 @@ export default function Playfield({ difficulty, soundEnabled, settings, onGameOv
             };
             const activeSize = sizeConfig[difficulty] || sizeConfig.NORMAL;
 
+            const isVisualExpired = nowTime > note.targetTime + 100;
+
             return (
               <div
                 key={note.id}
@@ -738,31 +740,35 @@ export default function Playfield({ difficulty, soundEnabled, settings, onGameOv
                   className="absolute w-[110%] h-[110%] rounded-full cursor-pointer z-35 bg-transparent"
                 />
 
-                {/* 1. Target timing outer ring (shrinking approach circle) */}
-                <motion.div
-                  initial={{ scale: 3.2, opacity: 0.4 }}
-                  animate={{ scale: 1.0, opacity: 1.0 }}
-                  transition={{ duration: note.duration / 1000, ease: "linear" }}
-                  className="absolute inset-[1px] rounded-full border-2 border-dashed border-cyan-400 pointer-events-none"
-                  style={{
-                    boxShadow: '0 0 10px rgba(34, 211, 238, 0.4)',
-                  }}
-                />
+                {!isVisualExpired && (
+                  <>
+                    {/* 1. Target timing outer ring (shrinking approach circle) */}
+                    <motion.div
+                      initial={{ scale: 3.2, opacity: 0.4 }}
+                      animate={{ scale: 1.0, opacity: 1.0 }}
+                      transition={{ duration: note.duration / 1000, ease: "linear" }}
+                      className="absolute inset-[1px] rounded-full border-2 border-dashed border-cyan-400 pointer-events-none"
+                      style={{
+                        boxShadow: '0 0 10px rgba(34, 211, 238, 0.4)',
+                      }}
+                    />
 
-                {/* Perfect flash ring marker inside */}
-                <div className="absolute inset-[-1px] rounded-full border border-teal-500/30 animate-ping pointer-events-none" />
+                    {/* Perfect flash ring marker inside */}
+                    <div className="absolute inset-[-1px] rounded-full border border-teal-500/30 animate-ping pointer-events-none" />
 
-                {/* 2. Core inner Target Circle */}
-                <div 
-                  className={`rounded-full bg-gradient-to-tr from-cyan-950 via-cyan-850 to-slate-900 border-2 border-cyan-400 flex items-center justify-center shadow-lg relative overflow-hidden select-none ${activeSize.innerClass}`}
-                  style={{
-                    boxShadow: '0 0 14px rgba(6, 182, 212, 0.5), inset 0 0 10px rgba(6, 182, 212, 0.2)',
-                  }}
-                >
-                  <span className="text-white font-extrabold font-mono text-sm drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                    {Math.max(0, (note.targetTime - nowTime) / 1000).toFixed(1)}
-                  </span>
-                </div>
+                    {/* 2. Core inner Target Circle */}
+                    <div 
+                      className={`rounded-full bg-gradient-to-tr from-cyan-950 via-cyan-850 to-slate-900 border-2 border-cyan-400 flex items-center justify-center shadow-lg relative overflow-hidden select-none ${activeSize.innerClass}`}
+                      style={{
+                        boxShadow: '0 0 14px rgba(6, 182, 212, 0.5), inset 0 0 10px rgba(6, 182, 212, 0.2)',
+                      }}
+                    >
+                      <span className="text-white font-extrabold font-mono text-sm drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                        {Math.max(0, (note.targetTime - nowTime) / 1000).toFixed(1)}
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
             );
           })}

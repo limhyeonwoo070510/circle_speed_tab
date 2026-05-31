@@ -109,7 +109,7 @@ export default function SettingsPreview({ startLevel, shrinkDuration, difficulty
           const remaining = circle.targetTime - now;
           const initialDelay = activeDurationRef.current;
           
-          if (remaining < -250) return null; // already fully align animated
+          if (remaining < -100) return null; // already fully align animated
 
           return (
             <div
