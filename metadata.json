@@ -1,0 +1,6 @@
+{
+  "name": "Circle Speed Tap",
+  "description": "화면에 나타나는 동그라미의 타이밍에 맞춰 클릭하는 반응속도 테스트 게임",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
