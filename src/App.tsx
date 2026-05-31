@@ -16,6 +16,7 @@ export default function App() {
   const [settings, setSettings] = useState<GameSettings>({
     startLevel: 1,
     shrinkDuration: 1100,
+    speedUpEffectEnabled: true,
   });
   const [finalStats, setFinalStats] = useState<GameStats>({
     score: 0,

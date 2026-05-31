@@ -213,9 +213,11 @@ export default function Playfield({ difficulty, soundEnabled, settings, onGameOv
       setStats(prev => {
         const nextLevel = prev.level + 1;
         // Play indicator cue for leveling up
-        audioService.play('combo');
-        // Spawn center screen SPEED UP announcement
-        spawnHitEffect(50, 50, 'perfect', `⚡ SPEED UP! Lv.${nextLevel} ⚡`);
+        if (settings.speedUpEffectEnabled !== false) {
+          audioService.play('combo');
+          // Spawn center screen SPEED UP announcement
+          spawnHitEffect(50, 50, 'perfect', `⚡ SPEED UP! Lv.${nextLevel} ⚡`);
+        }
         return {
           ...prev,
           level: nextLevel,
@@ -224,7 +226,7 @@ export default function Playfield({ difficulty, soundEnabled, settings, onGameOv
     }, 12000);
 
     return () => clearInterval(levelTimer);
-  }, [isCountingDown, isPaused]);
+  }, [isCountingDown, isPaused, settings.speedUpEffectEnabled]);
 
   // 5. NOTE GENERATOR / SPAWNING SEQUENCE
   const spawnNote = () => {
@@ -391,8 +393,8 @@ export default function Playfield({ difficulty, soundEnabled, settings, onGameOv
       const currentInterval = getSpawnInterval(stats.level);
       // Faster interval reward: higher speed multipliers (e.g., 1200 / 400ms = x3.0 score!)
       const speedMultiplier = Math.max(0.4, Number((1200 / currentInterval).toFixed(2)));
-      // Multiplier bonus: 1.5% increase per combo point to make scoring rewarding as combo mounts (capped at 250 combo max)
-      const cappedCombo = Math.min(250, stats.combo);
+      // Multiplier bonus: 1.5% increase per combo point to make scoring rewarding as combo mounts (capped at 100 combo max)
+      const cappedCombo = Math.min(100, stats.combo);
       const comboMultiplier = 1 + (cappedCombo * 0.015);
       const basePoints = isPerfect ? 300 : 100;
       const addedScore = Math.round(basePoints * stats.level * speedMultiplier * comboMultiplier * diffMultiplier);

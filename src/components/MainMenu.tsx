@@ -35,6 +35,9 @@ export default function MainMenu({
   // Custom Settings state
   const [startLevel, setStartLevel] = useState<number>(initialSettings.startLevel || 1);
   const [shrinkDuration, setShrinkDuration] = useState<number>(initialSettings.shrinkDuration);
+  const [speedUpEffectEnabled, setSpeedUpEffectEnabled] = useState<boolean>(
+    initialSettings.speedUpEffectEnabled !== false
+  );
 
   useEffect(() => {
     // Load local high scores
@@ -65,6 +68,7 @@ export default function MainMenu({
     onStartGame(difficulty, soundEnabled, {
       startLevel,
       shrinkDuration,
+      speedUpEffectEnabled,
     });
   };
 
@@ -245,7 +249,7 @@ export default function MainMenu({
                 className="w-full mb-5 py-3 bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800/80 rounded-2xl font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 text-cyan-400"
               >
                 <Settings className="w-4 h-4 text-cyan-400 animate-spin-slow" />
-                시작 속도 사용자 설정 및 프리뷰
+                사용자 설정 및 프리뷰
               </button>
             </div>
 
@@ -348,6 +352,29 @@ export default function MainMenu({
                     <span className="text-orange-400 shrink-0">※</span>
                     <span>설정된 속도 레벨에서부터 게임이 시작되며 시간이 흐를 수록 속도 레벨이 계속해서 상승합니다.</span>
                   </p>
+                </div>
+
+                {/* Switch Row: Speed-Up Notification Overlay */}
+                <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-slate-300 font-medium">3. 속도 레벨업 효과 보이기 (Show Speed-Up Alert)</span>
+                    <span className="text-[10px] text-slate-500">비활성화 시 12초마다 진행되는 속도 가속음 및 화면 중앙 배너를 숨깁니다.</span>
+                  </div>
+                  <button
+                    type="button"
+                    id="toggle-speedup-effect"
+                    onClick={() => {
+                      setSpeedUpEffectEnabled(!speedUpEffectEnabled);
+                      audioService.play('good');
+                    }}
+                    className={`px-3 py-1 rounded-lg font-bold tracking-wider transition-all border text-xs cursor-pointer ${
+                      speedUpEffectEnabled
+                        ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300'
+                        : 'bg-slate-900/80 border-slate-800 text-slate-500'
+                    }`}
+                  >
+                    {speedUpEffectEnabled ? '표시함 (ON)' : '숨김 (OFF)'}
+                  </button>
                 </div>
               </div>
 

@@ -6,6 +6,7 @@
 export interface GameSettings {
   startLevel: number;           // starts at 1, max 10
   shrinkDuration: number;       // ms (how fast target approach circle contracts, remains constant)
+  speedUpEffectEnabled: boolean; // whether to show Level Up Speed Up effects (visual text and cue sound)
 }
 
 export type GameStage = 'MENU' | 'PLAYING' | 'GAMEOVER';
